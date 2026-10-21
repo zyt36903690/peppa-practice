@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>中译英练习（62 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 14px; margin-bottom: 22px; background: #f8fafc; border: 1px solid #edf1f6; border-radius: 12px; }
+  .options { position: relative; display: inline-flex; align-items: center; gap: 10px; color: #344054; font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; }
+  .options input { position: absolute; width: 40px; height: 24px; margin: 0; opacity: 0; cursor: pointer; }
+  .switch { position: relative; flex: 0 0 40px; width: 40px; height: 24px; background: #cbd5e1; border-radius: 99px; transition: background .2s; }
+  .switch::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(16,24,40,.2); transition: transform .2s; }
+  .options input:checked + .switch { background: #3478c9; }
+  .options input:checked + .switch::after { transform: translateX(16px); }
+  .options input:focus-visible + .switch { outline: 3px solid rgba(52,120,201,.28); outline-offset: 3px; }
+  .mode { color: #475467; font-size: 12px; white-space: nowrap; padding: 5px 9px; background: #fff; border: 1px solid #e4e7ec; border-radius: 99px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #888; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<h1>中译英练习（62 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <label class="options"><input id="shuffleToggle" type="checkbox" onchange="changeOrder()"><span class="switch" aria-hidden="true"></span><span>打乱题目顺序</span></label>
+    <span class="mode" id="modeLabel">按原文顺序</span>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "佩奇在等她最好的朋友，小羊苏茜。", answers: ["Peppa is waiting for her best friend, Suzy Sheep."] },
+  { prompt: "你好，苏茜！", answers: ["Hello, Suzy!"] },
+  { prompt: "咩~！ 你好，佩奇。", answers: ["Baaaa! Hello, Peppa."] },
+  { prompt: "小羊苏茜来找佩奇玩了。", answers: ["Suzy Sheep has come to play with Peppa."] },
+  { prompt: "佩奇喜欢苏茜。苏茜也喜欢佩奇。", answers: ["Peppa loves Suzy. Suzy loves Peppa."] },
+  { prompt: "他们是最好的朋友。", answers: ["They are best friends."] },
+  { prompt: "佩奇，你为什么不与苏茜去你的卧室玩？", answers: ["Peppa, why don't you and Suzy go and play in your bedroom?"] },
+  { prompt: "好的，妈妈！", answers: ["Yes, Mummy!"] },
+  { prompt: "乔治也想一起玩。", answers: ["George wants to play, too."] },
+  { prompt: "佩奇和苏茜喜欢在佩奇的卧室玩。", answers: ["Peppa and Suzy love playing in Peppa's bedroom."] },
+  { prompt: "乔治也喜欢。", answers: ["So does George."] },
+  { prompt: "不行，乔治。这游戏只适合大女孩玩。", answers: ["No, George.This game is just for big girls."] },
+  { prompt: "你去玩你自己的玩具吧。", answers: ["Go and play with your own toys."] },
+  { prompt: "佩奇和苏茜只想自己玩。", answers: ["Peppa and Suzy want to play on their own."] },
+  { prompt: "我是一个小小仙女公主！", answers: ["I'm a tiny little fairy princess!"] },
+  { prompt: "我现在要挥动我的魔法棒了。。。然后把你变成青蛙！", answers: ["I'm going to wave my magic wand...and turn you into a frog!"] },
+  { prompt: "乔治不喜欢自己一个人玩。", answers: ["George doesn't like playing on his own."] },
+  { prompt: "乔治也想一起玩。", answers: ["George wants to play, too."] },
+  { prompt: "不行，乔治！我正在和苏茜玩。。。", answers: ["No, George! I'm playing with Suzy..."] },
+  { prompt: "你应该去别的地方玩。", answers: ["You'll have to play somewhere else."] },
+  { prompt: "乔治想和佩奇一起玩。", answers: ["George wants to play with Peppa."] },
+  { prompt: "他感到有点孤单。", answers: ["He feels a bit lonely."] },
+  { prompt: "乔治，我需要一些帮忙！", answers: ["George, I need some help!!"] },
+  { prompt: "我在做巧克力饼干啊！", answers: ["I'm making chocolate chip cookies!!"] },
+  { prompt: "需要有人舔干净这碗。", answers: ["Someone needs to lick out the bowl."] },
+  { prompt: "乔治喜欢帮妈妈做饼干。", answers: ["George likes helping Mummy make cookies."] },
+  { prompt: "但他更想和佩奇一起玩。", answers: ["But he likes playing with Peppa more."] },
+  { prompt: "咩~！我想当护士。", answers: ["I want to be a nurse!"] },
+  { prompt: "我想当一名医生。", answers: ["I want to be a doctor."] },
+  { prompt: "但谁来当病人呢？", answers: ["But who's gonna be the sick person?"] },
+  { prompt: "乔治！！！", answers: ["George!!!"] },
+  { prompt: "佩奇和苏茜喜欢扮演医生和护士。", answers: ["Peppa and Suzy love playing doctors and nurses."] },
+  { prompt: "乔治也喜欢。", answers: ["So does George."] },
+  { prompt: "佩奇听了下乔治的心脏。", answers: ["Peppa listens to George's chest."] },
+  { prompt: "现在，乔治，深吸一口气。。。然后咳嗽。", answers: ["Now, George, take a big breath in...then cough."] },
+  { prompt: "嗯，我觉得你的心跳有一点慢。。。", answers: ["Mm, I think your heart's a bit loose..."] },
+  { prompt: "。。。我给你贴块膏药。", answers: ["...I'll put a plaster on it."] },
+  { prompt: "请把嘴张大。", answers: ["Open wide, please."] },
+  { prompt: "苏茜量了乔治的体温。", answers: ["Suzy takes George's temperature."] },
+  { prompt: "哦，天啊，你的体温很高很高。", answers: ["Oh, dear, you're very, very hot."] },
+  { prompt: "我想你得在床上躺上三年。", answers: ["I think you have to stay in bed for three years."] },
+  { prompt: "猪爸爸来找乔治了。", answers: ["Daddy Pig has come to find George."] },
+  { prompt: "哦，糟糕！乔治怎么啦？", answers: ["Oh, no! What's wrong with George?"] },
+  { prompt: "不要担心，爸爸。这只是个游戏而已。", answers: ["Don't worry, Daddy. It's only a game."] },
+  { prompt: "乔治是我们的病人。", answers: ["George is our patient."] },
+  { prompt: "哦，我明白了。", answers: ["Oh, I see."] },
+  { prompt: "那病人能有访客吗？", answers: ["Can the patient have a visitor?"] },
+  { prompt: "只能看一会哦。", answers: ["Just for a little while."] },
+  { prompt: "他可能会很累。", answers: ["He might get tired."] },
+  { prompt: "是饼干！！！", answers: ["Cookies!!!"] },
+  { prompt: "是的，它们是给乔治的。", answers: ["Yes, they're for George."] },
+  { prompt: "它们是能治好乔治的药。", answers: ["They're his medicine to make him feel better."] },
+  { prompt: "嗯，不好意思，医生，", answers: ["Um, excuse me, doctor,"] },
+  { prompt: "你能帮我吗？", answers: ["Can you help me?"] },
+  { prompt: "我肚子有点疼。", answers: ["I have a sore tummy."] },
+  { prompt: "好痒！", answers: ["That tickles!"] },
+  { prompt: "我听到你的肚子在响。", answers: ["I can hear it rumbling."] },
+  { prompt: "我想你是饿了，爸爸。", answers: ["I think you're hungry, Daddy."] },
+  { prompt: "我想我需要很多的饼干让我好起来。", answers: ["Then I think I need lots of cookies to make me better."] },
+  { prompt: "还有我！", answers: ["And me!"] },
+  { prompt: "还有我！", answers: ["And me!"] },
+  { prompt: "还有我！咩！", answers: ["And me! Baa"] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.getElementById("shuffleToggle").checked) {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = "练习完成";
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `本轮进度：${completed} / ${cards.length}`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("modeLabel").textContent = document.getElementById("shuffleToggle").checked
+    ? "随机顺序" : "按原文顺序";
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始会清空本轮进度和统计，确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const confirmed = window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？");
+  if (!confirmed) {
+    document.getElementById("shuffleToggle").checked = !document.getElementById("shuffleToggle").checked;
+    return;
+  }
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>
