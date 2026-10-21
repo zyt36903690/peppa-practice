@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Treasure Hunt · 中译英练习（80 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  .home-link { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px -4px; padding: 4px 8px 4px 4px; border-radius: 999px; color: #667085; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s, background .2s; }
+  .home-link:hover { background: #eaf2fc; color: #3478c9; }
+  .home-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #e8edf4; border-radius: 50%; background: #fff; color: #3478c9; font-size: 18px; line-height: 1; box-shadow: 0 2px 6px rgba(31,50,81,.06); transition: transform .2s, box-shadow .2s; }
+  .home-link:hover .home-icon { transform: translateX(-2px); box-shadow: 0 3px 9px rgba(31,50,81,.1); }
+  .home-link:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+  .order-control { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f8fafc; }
+  .order-option { position: relative; cursor: pointer; }
+  .order-option input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .order-option span { display: block; padding: 8px 12px; border-radius: 8px; color: #667085; font-size: 13px; font-weight: 600; white-space: nowrap; transition: color .18s, background .18s, box-shadow .18s; }
+  .order-option input:checked + span { background: #fff; color: #3478c9; box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+  .order-option input:focus-visible + span { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html"><span class="home-icon" aria-hidden="true">‹</span><span>练习目录</span></a>
+<h1>Treasure Hunt · 中译英练习（80 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <div class="order-control" role="radiogroup" aria-label="题目顺序">
+      <label class="order-option"><input type="radio" name="orderMode" value="original" checked onchange="changeOrder()"><span>原文顺序</span></label>
+      <label class="order-option"><input type="radio" name="orderMode" value="shuffle" onchange="changeOrder()"><span>随机顺序</span></label>
+    </div>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track" id="progressTrack" role="progressbar" aria-label="已完成题目" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "猪奶奶和猪爷爷正在给佩奇和乔治准备寻宝游戏。", answers: ["Granny Pig and Grandpa Pig are making a treasure hunt for Peppa and Geroge."] },
+  { prompt: "猪奶奶在画藏宝图。", answers: ["Granny Pig is drawing the treasure map."] },
+  { prompt: "猪爷爷正在将宝藏藏在花园里的一个秘密地点。", answers: ["Grandpa Pig is burying the treasure in a secret place in the garden."] },
+  { prompt: "猪爷爷！你藏好了吗？", answers: ["Grandpa Pig! Have you finished?!"] },
+  { prompt: "佩奇和乔治很快就来这了！", answers: ["Peppa and George will be here soon!"] },
+  { prompt: "不要慌张，猪奶奶！", answers: ["No need to panic, Granny Pig!"] },
+  { prompt: "佩奇和乔治来了！", answers: ["Peppa and her family are here!"] },
+  { prompt: "快点，猪爷爷！他们到了！", answers: ["Quick, Grandpa Pig! They're here!"] },
+  { prompt: "快好了！", answers: ["Almost done!"] },
+  { prompt: "猪爷爷刚好及时完成！", answers: ["Grandpa Pig just finished in time!"] },
+  { prompt: "奶奶！我们来了！", answers: ["Granny Pig! We're here!"] },
+  { prompt: "你们好啊，我的小可爱们！", answers: ["Hello, my Little ones!"] },
+  { prompt: "爷爷！", answers: ["Grandpa Pig!"] },
+  { prompt: "你们好，我的宝贝们！", answers: ["Ahoy there, me hearties!"] },
+  { prompt: "佩奇，乔治，我们给你们准备了寻宝活动！", answers: ["Peppa, George, we've made you a treasure hunt!"] },
+  { prompt: "花园里的某个地方藏了宝藏哦！", answers: ["Somewhere in the garden is buried treasure!"] },
+  { prompt: "哇！宝藏！它在哪？", answers: ["Wow! Treasure! Where is it?"] },
+  { prompt: "你得自己去找。", answers: ["You have to look for it."] },
+  { prompt: "这是给佩奇的寻宝图。", answers: ["Here's a treasure map for Peppa."] },
+  { prompt: "乔治可以戴上我的海盗帽。", answers: ["And George can wear my pirate hat."] },
+  { prompt: "你好啊，乔治船长！", answers: ["Ahoy there, Captain George!"] },
+  { prompt: "这个地图有点难懂。", answers: ["The map is a bit difficult."] },
+  { prompt: "爸爸，你能帮忙吗？", answers: ["Daddy, can you help?"] },
+  { prompt: "当然可以，佩奇。", answers: ["Of course, Peppa."] },
+  { prompt: "我很擅长看地图的。", answers: ["I'm very good with maps."] },
+  { prompt: "呃。确实有点难懂。", answers: ["Er. It is a bit difficult."] },
+  { prompt: "猪爸爸，你把地图拿反了！", answers: ["Daddy Pig, you're holding the map upside down!"] },
+  { prompt: "是的，我想是的。", answers: ["Yes, I thought as much."] },
+  { prompt: "太简单了！红色叉的地方就是宝藏的地方！", answers: ["It's easy! The red cross shows where the treasure is!"] },
+  { prompt: "但是花园的什么地方有两棵苹果树呢？", answers: ["But where in the garden are those two apple trees?"] },
+  { prompt: "嗯。。。我不知道。", answers: ["Hmmm... I don't know."] },
+  { prompt: "你需要一点提示吗？", answers: ["Would you like a clue?"] },
+  { prompt: "需要！", answers: ["Yes, please!"] },
+  { prompt: "第一个提示在一个瓶子里。", answers: ["The first clue is in a bottle."] },
+  { prompt: "但是瓶子在哪呢？", answers: ["But where is the bottle?"] },
+  { prompt: "我看到了！", answers: ["I can see it!"] },
+  { prompt: "佩奇找到了第一个提示了。", answers: ["Peppa has found the first clue."] },
+  { prompt: "装在瓶子里的纸条。", answers: ["A message in a bottle."] },
+  { prompt: "大家看！这里有个瓶子！", answers: ["Look, everyone! Here's the bottle!"] },
+  { prompt: "做得好，佩奇！", answers: ["Well done, Peppa!"] },
+  { prompt: "让我们看看纸条上说什么。", answers: ["Let's see what the message says."] },
+  { prompt: "哦，它是来自海盗的纸条！", answers: ["Oh it's a message from a pirate!"] },
+  { prompt: "妈妈？你能帮我念一下海盗纸条吗？", answers: ["Mummy? Can you read the pirate's message?"] },
+  { prompt: "嗯。。。这个海盗的字写得真难看。", answers: ["Hmm... This pirate has very bad handwriting."] },
+  { prompt: "海盗的字写得挺不错的。", answers: ["The pirate's handwriting is excellent."] },
+  { prompt: "不，我一个字都看不懂。", answers: ["No, I can't make it out at all."] },
+  { prompt: "海盗写得很清楚，“跟着箭头走！”", answers: ["The pirate has clearly written,\"Follow the arrows!\""] },
+  { prompt: "跟着箭头走？", answers: ["Follow the arrows?"] },
+  { prompt: "乔治找到了第二个提示！", answers: ["George has found the second clue!"] },
+  { prompt: "摆成箭头形状的棍子！", answers: ["Sticks in the shape of an arrow!"] },
+  { prompt: "看！它们指向这边！", answers: ["Look! They point this way!"] },
+  { prompt: "佩奇和乔治在跟着箭头走。", answers: ["Peppa and George are following the arrows."] },
+  { prompt: "看，乔治！一个钥匙！", answers: ["Look, George! A key!"] },
+  { prompt: "佩奇找到了下一个提示。一个钥匙！", answers: ["Peppa has found the next clue. A key!"] },
+  { prompt: "干得好，佩奇！", answers: ["Well done, Peppa!"] },
+  { prompt: "现在你只要找到宝箱，然后打开它。", answers: ["Now you just have to find the treasure chest that it unlocks."] },
+  { prompt: "但是没有更多的线索了。", answers: ["But there aren't any more clues."] },
+  { prompt: "也许你应该再看一看地图。", answers: ["Maybe you should take another look at the map."] },
+  { prompt: "看，佩奇，地图上有两棵苹果树。", answers: ["Look, Peppa, the map has two apple trees on it."] },
+  { prompt: "这有棵苹果树！", answers: ["Here's an apple tree!"] },
+  { prompt: "这也有棵苹果树！", answers: ["And here's an apple tree!"] },
+  { prompt: "所以宝藏一定在这里了！", answers: ["So the treasure must be here!"] },
+  { prompt: "让我们来看看！", answers: ["Let's take a look!"] },
+  { prompt: "哦，天啊。这看起来不像有东西在。。。", answers: ["Oh, dear. There doesn't seem to be anything here..."] },
+  { prompt: "等一下！这里有东西！", answers: ["Hang on! There is something here!"] },
+  { prompt: "哇！宝藏！", answers: ["Wow! Treasure!"] },
+  { prompt: "好耶！", answers: ["Hurray!"] },
+  { prompt: "做得好！做得好！", answers: ["Well done! Well done!"] },
+  { prompt: "我有钥匙打开它！", answers: ["I've got the key to open it!"] },
+  { prompt: "哇！我真不敢相信！", answers: ["Wow! I can't believe it!"] },
+  { prompt: "居然是金币！它们一定很值钱！", answers: ["Gold coins! They must be worth a fortune!"] },
+  { prompt: "比那更好！", answers: ["It's better than that!"] },
+  { prompt: "他们不是金币，", answers: ["They are not gold coins,"] },
+  { prompt: "他们是巧克力金币！", answers: ["they are chocolate coins!"] },
+  { prompt: "每个人都有巧克力金币。", answers: ["And there's a chocolate coin for everybody."] },
+  { prompt: "好耶！", answers: ["Hurray!"] },
+  { prompt: "佩奇和乔治喜欢巧克力金币。", answers: ["Peppa and George love chocolate coins."] },
+  { prompt: "大家都喜欢巧克力金币。", answers: ["Everyone loves chocolate coins."] },
+  { prompt: "奶奶，爷爷，", answers: ["Granny, Grandpa,"] },
+  { prompt: "这是最好玩的寻宝游戏！", answers: ["this is the best treasure hunt ever!"] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+let currentOrderMode = "original";
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始将清空本轮进度和答题统计，并从第一题重新开始。确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const selectedMode = document.querySelector('input[name="orderMode"]:checked').value;
+  const hasProgress = stats.correct > 0 || stats.wrong > 0 || stats.skipped > 0;
+  if (hasProgress && !window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？")) {
+    document.querySelector(`input[name="orderMode"][value="${currentOrderMode}"]`).checked = true;
+    return;
+  }
+  currentOrderMode = selectedMode;
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>

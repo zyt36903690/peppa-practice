@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Daddy Gets Fit · 中译英练习（99 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  .home-link { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px -4px; padding: 4px 8px 4px 4px; border-radius: 999px; color: #667085; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s, background .2s; }
+  .home-link:hover { background: #eaf2fc; color: #3478c9; }
+  .home-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #e8edf4; border-radius: 50%; background: #fff; color: #3478c9; font-size: 18px; line-height: 1; box-shadow: 0 2px 6px rgba(31,50,81,.06); transition: transform .2s, box-shadow .2s; }
+  .home-link:hover .home-icon { transform: translateX(-2px); box-shadow: 0 3px 9px rgba(31,50,81,.1); }
+  .home-link:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+  .order-control { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f8fafc; }
+  .order-option { position: relative; cursor: pointer; }
+  .order-option input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .order-option span { display: block; padding: 8px 12px; border-radius: 8px; color: #667085; font-size: 13px; font-weight: 600; white-space: nowrap; transition: color .18s, background .18s, box-shadow .18s; }
+  .order-option input:checked + span { background: #fff; color: #3478c9; box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+  .order-option input:focus-visible + span { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html"><span class="home-icon" aria-hidden="true">‹</span><span>练习目录</span></a>
+<h1>Daddy Gets Fit · 中译英练习（99 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <div class="order-control" role="radiogroup" aria-label="题目顺序">
+      <label class="order-option"><input type="radio" name="orderMode" value="original" checked onchange="changeOrder()"><span>原文顺序</span></label>
+      <label class="order-option"><input type="radio" name="orderMode" value="shuffle" onchange="changeOrder()"><span>随机顺序</span></label>
+    </div>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track" id="progressTrack" role="progressbar" aria-label="已完成题目" aria-valuemin="0" aria-valuemax="99" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "猪妈妈正在看一个健身节目。", answers: ["Mummy Pig is watching a keep fit program on television."] },
+  { prompt: "现在一起来吧，这就对了。", answers: ["Come on, now, that's right."] },
+  { prompt: "弯曲，伸展，", answers: ["bend it, stretch it,"] },
+  { prompt: "一 二", answers: ["And one and two"] },
+  { prompt: "我最喜欢看电视了。", answers: ["I love watching television."] },
+  { prompt: "三 四", answers: ["and three and four"] },
+  { prompt: "这是什么节目，猪妈妈？", answers: ["What's this, Mummy Pig?"] },
+  { prompt: "这个是减肥的健身节目。", answers: ["It's a program about doing exercises to keep fit."] },
+  { prompt: "谢天谢地！", answers: ["Thank goodness!"] },
+  { prompt: "我不需要健身！", answers: ["I don't have to exercise!"] },
+  { prompt: "我天生就很匀称。", answers: ["I'm naturally fit."] },
+  { prompt: "可你看上去一点也不匀称，爸爸。", answers: ["You don't look very fit, Daddy."] },
+  { prompt: "你的肚子有点大！", answers: ["Your tummy is a bit big!"] },
+  { prompt: "我很匀称的！我可以给你看看！", answers: ["I'm very fit! I'll show you!"] },
+  { prompt: "我该先做什么呢？", answers: ["What shall I do first?"] },
+  { prompt: "碰一下你的脚趾。像这样！", answers: ["Touch your toes. Like this!"] },
+  { prompt: "简单！", answers: ["Easy!"] },
+  { prompt: "爸爸！不要假装碰不到你的脚趾哦。", answers: ["Daddy! Stop pretending that you can't touch your toes."] },
+  { prompt: "呃。。。我并没有假装，佩奇。", answers: ["Err... I'm not pretending, Peppa."] },
+  { prompt: "猪爸爸真的不能碰到他的脚趾。", answers: ["Daddy Pig really cannot touch his toes."] },
+  { prompt: "哦，天啊，猪爸爸！", answers: ["Oh, dear, Daddy!"] },
+  { prompt: "这样可不太好哦！", answers: ["That's not very good!"] },
+  { prompt: "嗯。。。也许我应该做点锻炼了。", answers: ["Hmmm... Maybe I should do a bit of exercise."] },
+  { prompt: "是的，爸爸。", answers: ["Yes, Daddy."] },
+  { prompt: "我会去锻炼。。。明天！", answers: ["And I will start... tomorrow!"] },
+  { prompt: "猪爸爸！你现在就应该开始锻炼了！", answers: ["Daddy Pig! You have to start exercising now!"] },
+  { prompt: "哦！", answers: ["Oh!"] },
+  { prompt: "不用担心，爸爸，我会帮你的，", answers: ["Don't worry, Daddy, I will help you."] },
+  { prompt: "哦，好吧！佩奇，你负责监督我减肥。", answers: ["Oh, alright! Peppa, you're in charge of getting me fit."] },
+  { prompt: "我该先做什么？", answers: ["What should I do first?"] },
+  { prompt: "首先，你必须做些俯卧撑！", answers: ["First, you must do some press-ups!"] },
+  { prompt: "简单！", answers: ["Easy!"] },
+  { prompt: "一，二。", answers: ["One, two."] },
+  { prompt: "你瞧。", answers: ["There."] },
+  { prompt: "很好，爸爸。", answers: ["Very good, Daddy."] },
+  { prompt: "现在，我想你做。。。一百个！", answers: ["Now, I want you to do...one hundred!"] },
+  { prompt: "一百个？！", answers: ["One hundred?!"] },
+  { prompt: "是的。", answers: ["Yes."] },
+  { prompt: "来吧，孩子们，来帮我做午餐。", answers: ["Come on, children, help me make lunch."] },
+  { prompt: "我也来帮忙。", answers: ["I'll help as well."] },
+  { prompt: "不行，爸爸！你还有一百个俯卧撑要做啊。", answers: ["No, Daddy! You've got one hundred press-ups to do."] },
+  { prompt: "哦。一。。。二。。。三。。。", answers: ["Oh. One... Two...Three..."] },
+  { prompt: "猪妈妈，佩奇和乔治在厨房做午餐。", answers: ["Mummy Pig, Peppa and George are in the kitchen making lunch."] },
+  { prompt: "四。。。六。。。", answers: ["Four...  Six..."] },
+  { prompt: "猪爸爸仍然在做他的俯卧撑。", answers: ["Daddy Pig is still doing his press-ups."] },
+  { prompt: "七！。。。", answers: ["Seven!..."] },
+  { prompt: "爸爸表现得很好。", answers: ["Daddy is doing very well."] },
+  { prompt: "八！", answers: ["Eight!"] },
+  { prompt: "九！。。。", answers: ["Nine!..."] },
+  { prompt: "十！。。。", answers: ["Ten!..."] },
+  { prompt: "我真的希望他不要做得过火了。", answers: ["I do hope he's not overdoing it."] },
+  { prompt: "十一！。。。十二！。。。", answers: ["Eleven!...Twelve!..."] },
+  { prompt: "我出去看看。", answers: ["I'll go and see."] },
+  { prompt: "十三！。。。十四！。。。", answers: ["Thirteen!... Fourteen!..."] },
+  { prompt: "十五！。。。十六！。。。", answers: ["Fifteen!...Sixteen!..."] },
+  { prompt: "十七！。。。", answers: ["Seventeen!.."] },
+  { prompt: "猪爸爸！你在作弊！", answers: ["Daddy Pig! You're cheating!"] },
+  { prompt: "你应该做俯卧撑的！", answers: ["You should be doing press-ups!"] },
+  { prompt: "哦！呃。。。", answers: ["Oh! Err..."] },
+  { prompt: "电视里的节目很有趣。", answers: ["There was something interesting on the TV."] },
+  { prompt: "淘气的爸爸！", answers: ["Naughty Daddy!"] },
+  { prompt: "也许爸爸用我的的旧健身单车效果会更好。", answers: ["Maybe Daddy will have more success with my old exercise bike."] },
+  { prompt: "啊哈！这个看上去有趣！", answers: ["Aha! This looks like fun!"] },
+  { prompt: "我可以一边骑一边看电视。", answers: ["I'll be able to cycle and watch TV at the same time."] },
+  { prompt: "这不行！", answers: ["It's impossible!"] },
+  { prompt: "这单车太吵了！", answers: ["This bike is too noisy."] },
+  { prompt: "我听不到电视里的声音！", answers: ["I can't hear the TV!"] },
+  { prompt: "但是你一定得瘦下来才行。", answers: ["You've got to get fit somehow."] },
+  { prompt: "我知道了！你可以骑我的自行车。", answers: ["I know! You can use my bicycle."] },
+  { prompt: "是的，而且你还可以呼吸新鲜空气。", answers: ["Yes, and then you'll get some fresh air as well."] },
+  { prompt: "猪爸爸要骑佩奇的小自行车。", answers: ["Daddy Pig is going to ride on Peppa's little bicycle."] },
+  { prompt: "爸爸，这是踏板。", answers: ["Daddy, these are the pedals."] },
+  { prompt: "这是刹车。。。", answers: ["These are the brakes..."] },
+  { prompt: "这个是铃铛。", answers: ["And this is the bell."] },
+  { prompt: "好的！好的！谢谢你，佩奇，我知道了。再见。", answers: ["Yes! Yes! Thank you, Peppa, I know. Bye bye."] },
+  { prompt: "小菜一碟！", answers: ["Easy as pie!"] },
+  { prompt: "减肥不容易啊。", answers: ["Getting fit is quite hard work."] },
+  { prompt: "啊哈！现在我不用踩踏板就能瘦身了！", answers: ["Aha! Now I can get fit without having to pedal!"] },
+  { prompt: "猪爸爸骑得非常快。", answers: ["Daddy Pig is going very fast."] },
+  { prompt: "哦！也许我最好骑慢点。", answers: ["Oh! Maybe I'd better slow down."] },
+  { prompt: "啊~！这刹车不太管用啊！", answers: ["Arrgh! The brakes aren't strong enough!"] },
+  { prompt: "救命啊！", answers: ["Help!"] },
+  { prompt: "猪爸爸已经出去很长时间了。", answers: ["Daddy Pig has been gone for a long time."] },
+  { prompt: "妈妈，爸爸去哪里了？", answers: ["Mummy, where can Daddy be?"] },
+  { prompt: "别担心，佩奇。", answers: ["Don't worry, Peppa."] },
+  { prompt: "猪爸爸一定骑得很开心所以才去了那么久。", answers: ["Daddy must be really enjoying himself to be away for so long."] },
+  { prompt: "爸爸！你去了哪里？", answers: ["Daddy! Where have you been?"] },
+  { prompt: "我一直飞速骑到山底下，", answers: ["I whizzed all the way down the hill,"] },
+  { prompt: "然后又把自行车推了上来。", answers: ["and then I had to push the bike all the way back up again."] },
+  { prompt: "哦！可怜的猪爸爸！", answers: ["Oh! Poor Daddy Pig!"] },
+  { prompt: "好吧，至少我已经做了锻炼了。", answers: ["Well, at least I've done my exercise."] },
+  { prompt: "是的。今天。", answers: ["Yes. For today."] },
+  { prompt: "什么意思？", answers: ["What do you mean?"] },
+  { prompt: "你明天也得锻炼。", answers: ["You'll have to do some more exercise tomorrow."] },
+  { prompt: "什么?", answers: ["What?"] },
+  { prompt: "爸爸，要减肥，你得每天都锻炼。", answers: ["Daddy, to get fit, you have to exercise every day."] },
+  { prompt: "哦，不。", answers: ["Oh, no."] },
+  { prompt: "但是不用担心，爸爸，我会监督你的。", answers: ["But don't worry, Daddy,I'll make sure you do it."] },
+  { prompt: "是的！我知道你会的。", answers: ["Yes! I know you will."] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+let currentOrderMode = "original";
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始将清空本轮进度和答题统计，并从第一题重新开始。确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const selectedMode = document.querySelector('input[name="orderMode"]:checked').value;
+  const hasProgress = stats.correct > 0 || stats.wrong > 0 || stats.skipped > 0;
+  if (hasProgress && !window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？")) {
+    document.querySelector(`input[name="orderMode"][value="${currentOrderMode}"]`).checked = true;
+    return;
+  }
+  currentOrderMode = selectedMode;
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>

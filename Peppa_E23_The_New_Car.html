@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>The New Car · 中译英练习（81 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  .home-link { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px -4px; padding: 4px 8px 4px 4px; border-radius: 999px; color: #667085; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s, background .2s; }
+  .home-link:hover { background: #eaf2fc; color: #3478c9; }
+  .home-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #e8edf4; border-radius: 50%; background: #fff; color: #3478c9; font-size: 18px; line-height: 1; box-shadow: 0 2px 6px rgba(31,50,81,.06); transition: transform .2s, box-shadow .2s; }
+  .home-link:hover .home-icon { transform: translateX(-2px); box-shadow: 0 3px 9px rgba(31,50,81,.1); }
+  .home-link:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+  .order-control { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f8fafc; }
+  .order-option { position: relative; cursor: pointer; }
+  .order-option input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .order-option span { display: block; padding: 8px 12px; border-radius: 8px; color: #667085; font-size: 13px; font-weight: 600; white-space: nowrap; transition: color .18s, background .18s, box-shadow .18s; }
+  .order-option input:checked + span { background: #fff; color: #3478c9; box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+  .order-option input:focus-visible + span { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html"><span class="home-icon" aria-hidden="true">‹</span><span>练习目录</span></a>
+<h1>The New Car · 中译英练习（81 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <div class="order-control" role="radiogroup" aria-label="题目顺序">
+      <label class="order-option"><input type="radio" name="orderMode" value="original" checked onchange="changeOrder()"><span>原文顺序</span></label>
+      <label class="order-option"><input type="radio" name="orderMode" value="shuffle" onchange="changeOrder()"><span>随机顺序</span></label>
+    </div>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track" id="progressTrack" role="progressbar" aria-label="已完成题目" aria-valuemin="0" aria-valuemax="81" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "今天，佩奇和家人开着红色小车打算出游。", answers: ["Today, Peppa and her family are going for a drive in their red car."] },
+  { prompt: "我们要把车篷放下吗？", answers: ["Shall we have the roof down?"] },
+  { prompt: "好的。", answers: ["Yes, please!"] },
+  { prompt: "佩奇和乔治喜欢他们的车。", answers: ["Peppa and George love their car."] },
+  { prompt: "大家都准备好了吗？", answers: ["Is everybody ready?"] },
+  { prompt: "准备好了！", answers: ["Ready!"] },
+  { prompt: "那我们就出发了！", answers: ["Then let's go!"] },
+  { prompt: "我喜欢我们的车！", answers: ["I love our car!"] },
+  { prompt: "我们的车也喜欢我们，对嘛？", answers: ["And our car loves us, too! Don't you?"] },
+  { prompt: "哦，糟糕，车子听起来不对劲。", answers: ["Oh, dear, the car does not sound very well."] },
+  { prompt: "出什么问题了，爸爸？", answers: ["What's wrong, Daddy?"] },
+  { prompt: "呃。。。我也不知道。", answers: ["Er... l don't know."] },
+  { prompt: "让我们把车开去狗爷爷的修车厂吧。", answers: ["Let's take it to Granddad Dog's Garage."] },
+  { prompt: "他能修好的。", answers: ["He can fix it."] },
+  { prompt: "这是个好主意，猪妈妈。", answers: ["That's a good idea, Mummy Pig."] },
+  { prompt: "狗爷爷开了个修车厂。", answers: ["Granddad Dog runs the garage."] },
+  { prompt: "他很善长修理汽车。", answers: ["he is very good at mending cars."] },
+  { prompt: "哦，天呐，猪爸爸！", answers: ["Oh, dear, Daddy Pig!"] },
+  { prompt: "你的车子听上去有点问题。", answers: ["Your car does not sound very well."] },
+  { prompt: "请问你能不能修好它呢，狗爷爷？", answers: ["Can you fix it, please, Granddad Dog?"] },
+  { prompt: "可以。。。但是它需要一整天。", answers: ["Yes......but it will take all day."] },
+  { prompt: "哦。。。", answers: ["Ohhh..."] },
+  { prompt: "我们本来想开车出去兜风的。", answers: ["We wanted to go for a drive in our car."] },
+  { prompt: "不用担心。", answers: ["Don't worry."] },
+  { prompt: "我修车时可以把这辆新车借给你们。", answers: ["You can borrow this new car while I fix yours."] },
+  { prompt: "太好了！", answers: ["Hurray!"] },
+  { prompt: "谢谢你，狗爷爷。", answers: ["Thank you, Granddad Dog."] },
+  { prompt: "你们想把车篷放下来吗？", answers: ["Would you like the roof down?"] },
+  { prompt: "好的，谢谢！", answers: ["Yes, please!"] },
+  { prompt: "我只要按下这个红色按钮就行了。", answers: ["I'll just press this red button."] },
+  { prompt: "多么智能的车子啊！", answers: ["What a clever car!"] },
+  { prompt: "哇。", answers: ["Wow."] },
+  { prompt: "当你们回来时，", answers: ["When you come back,"] },
+  { prompt: "我就会修好你们的车子的。", answers: ["I will have fixed your car."] },
+  { prompt: "谢谢你，狗爷爷。", answers: ["Thank you, Grandad Dog."] },
+  { prompt: "再见！", answers: ["Goodbye!"] },
+  { prompt: "再见！", answers: ["Bye bye!"] },
+  { prompt: "佩奇和家人喜欢这辆蓝色新汽车。", answers: ["Peppa and her family like the new blue car."] },
+  { prompt: "这辆新车里有很多按钮。", answers: ["There are so many buttons in this new car."] },
+  { prompt: "这个绿色的按钮是干什么的，爸爸？", answers: ["What does the green button do, Daddy?"] },
+  { prompt: "让我们试试看。", answers: ["Let's see."] },
+  { prompt: "原来是魔法窗户！", answers: ["Magic windows!"] },
+  { prompt: "爸爸！把魔法窗户降下去吧。", answers: ["Daddy! Make the magic windows go down."] },
+  { prompt: "这个蓝色的按钮是干什么的？", answers: ["What does the blue button do?"] },
+  { prompt: "我不知道。让我们试试看。", answers: ["I don't know. Let's see."] },
+  { prompt: "啊！", answers: ["Arrgh!"] },
+  { prompt: "我喜欢这辆新车。", answers: ["I love this new car."] },
+  { prompt: "我们可以留下它吗？", answers: ["Can we keep it?"] },
+  { prompt: "不行，我们不能留下它，佩奇。", answers: ["No, we can't keep it, Peppa."] },
+  { prompt: "我们今天只是借用一下。", answers: ["We've only borrowed it for today."] },
+  { prompt: "哦。", answers: ["Ohh."] },
+  { prompt: "哦，不，我想快要下雨了。", answers: ["Oh, no, I think it's going to rain."] },
+  { prompt: "是的，我来把车篷升起来。", answers: ["Yes, I'll just put the roof up."] },
+  { prompt: "可是，哪个按钮是用来升起车篷的？", answers: ["Now, which is the button to close the roof?"] },
+  { prompt: "哎哟！我糊涂了。", answers: ["Oops! Silly me."] },
+  { prompt: "一定是这个按钮。", answers: ["This must be the button."] },
+  { prompt: "啊！", answers: ["Arrgh!"] },
+  { prompt: "新车朝猪爸爸脸上喷了一脸的水。", answers: ["The new car has squirted Daddy Pig with water."] },
+  { prompt: "糊涂爸爸，那不是控制车篷的！", answers: ["Silly Daddy, that's not the roof!"] },
+  { prompt: "是这个按钮！哎哟！", answers: ["This button! Oops!"] },
+  { prompt: "不是那个！是这个！", answers: ["Not that one! This button!"] },
+  { prompt: "啊！救命啊！", answers: ["Arrgh! Help!"] },
+  { prompt: "猪爸爸忘了是哪个按钮来关车篷的。", answers: ["Daddy Pig has forgotten which button closes the roof."] },
+  { prompt: "我觉得这辆车不喜欢我！", answers: ["I don't think this car likes me!"] },
+  { prompt: "让我们来试一下这个红色的按钮。", answers: ["Let's try the red button."] },
+  { prompt: "太好了！", answers: ["Hurray!"] },
+  { prompt: "但是现在雨停了。", answers: ["But now it's stopped raining."] },
+  { prompt: "我们能把车篷再打开吗？", answers: ["Can we open the roof again?"] },
+  { prompt: "呃，好的，是哪个按钮？", answers: ["Er, yes. which button was it?"] },
+  { prompt: "红色的那个！", answers: ["The red one!"] },
+  { prompt: "好了！", answers: ["Hurray!"] },
+  { prompt: "狗爷爷已经修好了车子。", answers: ["Granddad Dog has fixed the car."] },
+  { prompt: "你们的车子已经修好了。", answers: ["Your car is fixed."] },
+  { prompt: "太好了！", answers: ["Hurray!"] },
+  { prompt: "谢谢你，狗爷爷，不用找零钱了。", answers: ["Thank you, Granddad Dog, and keep the change."] },
+  { prompt: "谢谢你，猪爸爸。", answers: ["Thank you, Daddy Pig."] },
+  { prompt: "再见！", answers: ["Goodbye!"] },
+  { prompt: "再见！", answers: ["Goodbye!"] },
+  { prompt: "还是开我们的旧车感觉好！", answers: ["It's good to get our old car back again!"] },
+  { prompt: "我喜欢那辆新车，但我更喜欢我们的旧车。", answers: ["I liked the new car but I like our old car better."] },
+  { prompt: "我觉得我们的旧车也喜欢我们，对嘛？", answers: ["And I think our old car likes us, too. Don't you?"] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+let currentOrderMode = "original";
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始将清空本轮进度和答题统计，并从第一题重新开始。确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const selectedMode = document.querySelector('input[name="orderMode"]:checked').value;
+  const hasProgress = stats.correct > 0 || stats.wrong > 0 || stats.skipped > 0;
+  if (hasProgress && !window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？")) {
+    document.querySelector(`input[name="orderMode"][value="${currentOrderMode}"]`).checked = true;
+    return;
+  }
+  currentOrderMode = selectedMode;
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>

@@ -1,11 +1,644 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>佩奇练习</title></head>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <title>小猪佩奇 · 中译英练习</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 64px 20px 36px;
+      background: #f4f7fb;
+      color: #202938;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .page { width: min(100%, 1040px); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border: 1px solid #dce9f8;
+      border-radius: 999px;
+      background: #edf5ff;
+      color: #3478c9;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3478c9;
+      content: "";
+    }
+    h1 { margin: 18px 0 8px; font-size: clamp(27px, 5vw, 34px); letter-spacing: -.03em; }
+    .intro { margin: 0; color: #667085; font-size: 15px; line-height: 1.7; }
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 36px 2px 14px;
+    }
+    h2 { margin: 0; font-size: 17px; }
+    .count { color: #667085; font-size: 13px; }
+    .catalog-tools { display: grid; gap: 14px; margin: 0 0 18px; }
+    .search-wrap { position: relative; }
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      color: #98a2b3;
+      font-size: 18px;
+      line-height: 1;
+      transform: translateY(-52%);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 16px 0 44px;
+      border: 1px solid #dce3ec;
+      border-radius: 13px;
+      background: #fff;
+      color: #202938;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    .search-input::placeholder { color: #98a2b3; }
+    .search-input:focus { border-color: #78a9e2; box-shadow: 0 0 0 4px rgba(52, 120, 201, .12); }
+    .range-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .range-button {
+      min-height: 36px;
+      padding: 0 13px;
+      border: 1px solid #e1e7ef;
+      border-radius: 999px;
+      background: #fff;
+      color: #596579;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: color .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .range-button:hover { border-color: #b9d0ed; color: #3478c9; }
+    .range-button[aria-pressed="true"] { border-color: #3478c9; background: #3478c9; color: #fff; }
+    .range-button:focus-visible { outline: 3px solid rgba(52, 120, 201, .25); outline-offset: 2px; }
+    .result-count { min-height: 18px; margin: -3px 2px 0; color: #667085; font-size: 13px; }
+    .episodes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr)); gap: 8px; }
+    .episode {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 58px;
+      padding: 9px 10px;
+      border: 1px solid #e8edf4;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(31, 50, 81, .045);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .episode[hidden] { display: none; }
+    .episode:hover {
+      transform: translateY(-2px);
+      border-color: #c9dcf4;
+      box-shadow: 0 9px 24px rgba(31, 50, 81, .09);
+    }
+    .episode:focus-visible { outline: 3px solid rgba(52, 120, 201, .28); outline-offset: 3px; }
+    .episode-number {
+      display: grid;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 10px;
+      background: #edf5ff;
+      color: #3478c9;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .episode-info { flex: 1; min-width: 0; }
+    .episode-info strong { display: block; overflow-wrap: anywhere; font-size: 12px; line-height: 1.35; }
+    .episode-info span { display: block; margin-top: 3px; color: #667085; font-size: 10px; }
+    .arrow { color: #98a2b3; font-size: 18px; transition: color .18s ease, transform .18s ease; }
+    .episode:hover .arrow { transform: translateX(3px); color: #3478c9; }
+    .empty-state {
+      display: none;
+      padding: 30px 18px;
+      border: 1px dashed #d5deea;
+      border-radius: 14px;
+      color: #667085;
+      text-align: center;
+    }
+    .empty-state.is-visible { display: block; }
+    footer { margin-top: 28px; color: #98a2b3; font-size: 12px; text-align: center; }
+    @media (max-width: 520px) {
+      body { padding: 38px 16px 28px; }
+      .section-heading { margin-top: 28px; }
+      .range-filters { flex-wrap: nowrap; overflow-x: auto; padding: 2px 1px 7px; }
+      .range-button { flex: 0 0 auto; }
+      .episodes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+      .episode { min-height: 58px; gap: 7px; padding: 8px; }
+      .episode-number { flex-basis: 30px; width: 30px; height: 30px; }
+      .episode-info span { font-size: 9px; }
+      .arrow { font-size: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
 <body>
-  <h1>小猪佩奇 中译英练习</h1>
-  <ul>
-    <li><a href="Peppa_E03_Best_Friend.html">第3集 Best Friend</a></li>
-    <li><a href="Peppa_E04_Polly Parrot.html">第4集 Polly Parrot</a></li>
-  </ul>
+  <main class="page">
+    <span class="eyebrow">英语练习 · 按集学习</span>
+    <h1>小猪佩奇中译英</h1>
+    <p class="intro">选择一集开始练习。看中文提示，试着回忆英文台词。</p>
+
+    <section aria-labelledby="episode-heading">
+      <div class="section-heading">
+        <h2 id="episode-heading">选择练习内容</h2>
+        <span class="count">共 52 集</span>
+      </div>
+      <div class="catalog-tools">
+        <label class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input class="search-input" id="episode-search" type="search" placeholder="搜索集数或英文标题，例如 12、Bicycles" autocomplete="off" aria-label="搜索集数或英文标题">
+        </label>
+        <div class="range-filters" role="group" aria-label="按集数范围筛选">
+          <button class="range-button" type="button" data-from="1" data-to="52" aria-pressed="true">全部</button>
+          <button class="range-button" type="button" data-from="1" data-to="20" aria-pressed="false">01–20</button>
+          <button class="range-button" type="button" data-from="21" data-to="40" aria-pressed="false">21–40</button>
+          <button class="range-button" type="button" data-from="41" data-to="52" aria-pressed="false">41–52</button>
+        </div>
+        <p class="result-count" id="result-count" aria-live="polite">显示 52 / 52 集</p>
+      </div>
+      <nav class="episodes" aria-label="练习集数">
+<a class="episode" data-episode="01" href="Peppa_E01_Muddy_Puddles.html">
+          <span class="episode-number">01</span>
+          <span class="episode-info">
+            <strong>Muddy Puddles.</strong>
+            <span>第1集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="02" href="Peppa_E02_Mr_Dinosaur_is_Lost.html">
+          <span class="episode-number">02</span>
+          <span class="episode-info">
+            <strong>Mr. Dinosaur is Lost.</strong>
+            <span>第2集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="03" href="Peppa_E03_Best_Friend.html">
+          <span class="episode-number">03</span>
+          <span class="episode-info">
+            <strong>Best Friend.</strong>
+            <span>第3集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="04" href="Peppa_E04_Polly_Parrot.html">
+          <span class="episode-number">04</span>
+          <span class="episode-info">
+            <strong>Polly Parrot</strong>
+            <span>第4集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="05" href="Peppa_E05_Hide_and_Seek.html">
+          <span class="episode-number">05</span>
+          <span class="episode-info">
+            <strong>Hide and Seek</strong>
+            <span>第5集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="06" href="Peppa_E06_The_Playgroup.html">
+          <span class="episode-number">06</span>
+          <span class="episode-info">
+            <strong>The Playgroup</strong>
+            <span>第6集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="07" href="Peppa_E07_Mummy_Pig_at_work.html">
+          <span class="episode-number">07</span>
+          <span class="episode-info">
+            <strong>Mummy Pig at work</strong>
+            <span>第7集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="08" href="Peppa_E08_Piggy_in_the_Middle.html">
+          <span class="episode-number">08</span>
+          <span class="episode-info">
+            <strong>Piggy in the Middle!</strong>
+            <span>第8集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="09" href="Peppa_E09_Daddy_Loses_his_Glasses.html">
+          <span class="episode-number">09</span>
+          <span class="episode-info">
+            <strong>Daddy Loses his Glasses!</strong>
+            <span>第9集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="10" href="Peppa_E10_Gardening.html">
+          <span class="episode-number">10</span>
+          <span class="episode-info">
+            <strong>Gardening!</strong>
+            <span>第10集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="11" href="Peppa_E11_Hiccups.html">
+          <span class="episode-number">11</span>
+          <span class="episode-info">
+            <strong>Hiccups!</strong>
+            <span>第11集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="12" href="Peppa_E12_Bicycles.html">
+          <span class="episode-number">12</span>
+          <span class="episode-info">
+            <strong>Bicycles!</strong>
+            <span>第12集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="13" href="Peppa_E13_Secrets.html">
+          <span class="episode-number">13</span>
+          <span class="episode-info">
+            <strong>Secrets</strong>
+            <span>第13集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="14" href="Peppa_E14_Flying_a_kite.html">
+          <span class="episode-number">14</span>
+          <span class="episode-info">
+            <strong>Flying a kite!</strong>
+            <span>第14集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="15" href="Peppa_E15_Picnic.html">
+          <span class="episode-number">15</span>
+          <span class="episode-info">
+            <strong>Picnic!</strong>
+            <span>第15集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="16" href="Peppa_E16_Musical_Instruments.html">
+          <span class="episode-number">16</span>
+          <span class="episode-info">
+            <strong>Musical Instruments</strong>
+            <span>第16集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="17" href="Peppa_E17_Frogs_and_worms_and_Butterflies.html">
+          <span class="episode-number">17</span>
+          <span class="episode-info">
+            <strong>Frogs and worms and Butterflies!</strong>
+            <span>第17集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="18" href="Peppa_E18_Dressing_Up.html">
+          <span class="episode-number">18</span>
+          <span class="episode-info">
+            <strong>Dressing Up!</strong>
+            <span>第18集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="19" href="Peppa_E19_New_Shoes.html">
+          <span class="episode-number">19</span>
+          <span class="episode-info">
+            <strong>New Shoes!</strong>
+            <span>第19集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="20" href="Peppa_E20_The_School_Fete.html">
+          <span class="episode-number">20</span>
+          <span class="episode-info">
+            <strong>The School Fete!</strong>
+            <span>第20集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="21" href="Peppa_E21_Mummy_Pig_s_Birthday.html">
+          <span class="episode-number">21</span>
+          <span class="episode-info">
+            <strong>Mummy Pig&#x27;s Birthday</strong>
+            <span>第21集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="22" href="Peppa_E22_The_Tooth_Fairy.html">
+          <span class="episode-number">22</span>
+          <span class="episode-info">
+            <strong>The Tooth Fairy</strong>
+            <span>第22集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="23" href="Peppa_E23_The_New_Car.html">
+          <span class="episode-number">23</span>
+          <span class="episode-info">
+            <strong>The New Car</strong>
+            <span>第23集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="24" href="Peppa_E24_Treasure_Hunt.html">
+          <span class="episode-number">24</span>
+          <span class="episode-info">
+            <strong>Treasure Hunt</strong>
+            <span>第24集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="25" href="Peppa_E25_Not_Very_well.html">
+          <span class="episode-number">25</span>
+          <span class="episode-info">
+            <strong>Not Very well</strong>
+            <span>第25集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="26" href="Peppa_E26_Snow.html">
+          <span class="episode-number">26</span>
+          <span class="episode-info">
+            <strong>Snow</strong>
+            <span>第26集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="27" href="Peppa_E27_Windy_Castle.html">
+          <span class="episode-number">27</span>
+          <span class="episode-info">
+            <strong>Windy Castle</strong>
+            <span>第27集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="28" href="Peppa_E28_My_Cousin_Chloe.html">
+          <span class="episode-number">28</span>
+          <span class="episode-info">
+            <strong>My Cousin Chloe</strong>
+            <span>第28集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="29" href="Peppa_E29_Pancakes.html">
+          <span class="episode-number">29</span>
+          <span class="episode-info">
+            <strong>Pancakes</strong>
+            <span>第29集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="30" href="Peppa_E30_Babysitting.html">
+          <span class="episode-number">30</span>
+          <span class="episode-info">
+            <strong>Babysitting</strong>
+            <span>第30集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="31" href="Peppa_E31_Ballet_Lesson.html">
+          <span class="episode-number">31</span>
+          <span class="episode-info">
+            <strong>Ballet Lesson</strong>
+            <span>第31集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="32" href="Peppa_E32_Thunderstorm.html">
+          <span class="episode-number">32</span>
+          <span class="episode-info">
+            <strong>Thunderstorm</strong>
+            <span>第32集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="33" href="Peppa_E33_Cleaning_the_Car.html">
+          <span class="episode-number">33</span>
+          <span class="episode-info">
+            <strong>Cleaning the Car</strong>
+            <span>第33集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="34" href="Peppa_E34_Lunch.html">
+          <span class="episode-number">34</span>
+          <span class="episode-info">
+            <strong>Lunch</strong>
+            <span>第34集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="35" href="Peppa_E35_Camping.html">
+          <span class="episode-number">35</span>
+          <span class="episode-info">
+            <strong>Camping</strong>
+            <span>第35集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="36" href="Peppa_E36_The_Sleepy_Princess.html">
+          <span class="episode-number">36</span>
+          <span class="episode-info">
+            <strong>The Sleepy Princess</strong>
+            <span>第36集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="37" href="Peppa_E37_The_Tree_House.html">
+          <span class="episode-number">37</span>
+          <span class="episode-info">
+            <strong>The Tree House</strong>
+            <span>第37集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="38" href="Peppa_E38_Fancy_Dress_Party.html">
+          <span class="episode-number">38</span>
+          <span class="episode-info">
+            <strong>Fancy Dress Party</strong>
+            <span>第38集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="39" href="Peppa_E39_The_Museum.html">
+          <span class="episode-number">39</span>
+          <span class="episode-info">
+            <strong>The Museum</strong>
+            <span>第39集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="40" href="Peppa_E40_Very_Hot_Day.html">
+          <span class="episode-number">40</span>
+          <span class="episode-info">
+            <strong>Very Hot Day</strong>
+            <span>第40集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="41" href="Peppa_E41_Chloe_s_Puppet_Show.html">
+          <span class="episode-number">41</span>
+          <span class="episode-info">
+            <strong>Chloe&#x27;s Puppet Show</strong>
+            <span>第41集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="42" href="Peppa_E42_Daddy_Gets_Fit.html">
+          <span class="episode-number">42</span>
+          <span class="episode-info">
+            <strong>Daddy Gets Fit</strong>
+            <span>第42集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="43" href="Peppa_E43_Tidying_Up.html">
+          <span class="episode-number">43</span>
+          <span class="episode-info">
+            <strong>Tidying Up</strong>
+            <span>第43集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="44" href="Peppa_E44_The_Playground.html">
+          <span class="episode-number">44</span>
+          <span class="episode-info">
+            <strong>The Playground</strong>
+            <span>第44集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="45" href="Peppa_E45_Daddy_Puts_up_a_Picture.html">
+          <span class="episode-number">45</span>
+          <span class="episode-info">
+            <strong>Daddy Puts up a Picture</strong>
+            <span>第45集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="46" href="Peppa_E46_At_the_Beach.html">
+          <span class="episode-number">46</span>
+          <span class="episode-info">
+            <strong>At the Beach</strong>
+            <span>第46集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="47" href="Peppa_E47_Mister_Skinnylegs.html">
+          <span class="episode-number">47</span>
+          <span class="episode-info">
+            <strong>Mister Skinnylegs</strong>
+            <span>第47集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="48" href="Peppa_E48_Grandpa_Pig_s_Boat.html">
+          <span class="episode-number">48</span>
+          <span class="episode-info">
+            <strong>Grandpa Pig&#x27;s Boat</strong>
+            <span>第48集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="49" href="Peppa_E49_Shopping.html">
+          <span class="episode-number">49</span>
+          <span class="episode-info">
+            <strong>Shopping</strong>
+            <span>第49集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="50" href="Peppa_E50_My_Birthday_Party.html">
+          <span class="episode-number">50</span>
+          <span class="episode-info">
+            <strong>My Birthday Party</strong>
+            <span>第50集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="51" href="Peppa_E51_Daddy_s_Movie_Camera.html">
+          <span class="episode-number">51</span>
+          <span class="episode-info">
+            <strong>Daddy&#x27;s Movie Camera</strong>
+            <span>第51集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+<a class="episode" data-episode="52" href="Peppa_E52_School_Play.html">
+          <span class="episode-number">52</span>
+          <span class="episode-info">
+            <strong>School Play</strong>
+            <span>第52集 · 中译英练习</span>
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+      </nav>
+      <p class="empty-state" id="empty-state">没有找到符合条件的集数，试试其他关键词或范围。</p>
+    </section>
+
+    <footer>循序渐进，每天练习一点点</footer>
+  </main>
+  <script>
+    const episodeCards = [...document.querySelectorAll('.episode')];
+    const searchInput = document.querySelector('#episode-search');
+    const rangeButtons = [...document.querySelectorAll('.range-button')];
+    const resultCount = document.querySelector('#result-count');
+    const emptyState = document.querySelector('#empty-state');
+    let activeRange = { from: 1, to: 52 };
+
+    function filterEpisodes() {
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      const numberQuery = query.match(/^第?\s*(\d+)\s*集?$/);
+      let visibleCount = 0;
+
+      for (const card of episodeCards) {
+        const episodeNumber = Number(card.dataset.episode);
+        const title = card.querySelector('strong').textContent.toLocaleLowerCase();
+        const matchesRange = episodeNumber >= activeRange.from && episodeNumber <= activeRange.to;
+        const matchesQuery = !query || (numberQuery
+          ? episodeNumber === Number(numberQuery[1])
+          : title.includes(query) || String(episodeNumber).includes(query));
+        const visible = matchesRange && matchesQuery;
+        card.hidden = !visible;
+        if (visible) visibleCount++;
+      }
+
+      resultCount.textContent = `显示 ${visibleCount} / ${episodeCards.length} 集`;
+      emptyState.classList.toggle('is-visible', visibleCount === 0);
+    }
+
+    searchInput.addEventListener('input', filterEpisodes);
+    rangeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeRange = { from: Number(button.dataset.from), to: Number(button.dataset.to) };
+        rangeButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+        filterEpisodes();
+      });
+    });
+  </script>
 </body>
 </html>

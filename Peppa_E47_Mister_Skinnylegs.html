@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Mister Skinnylegs · 中译英练习（79 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  .home-link { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px -4px; padding: 4px 8px 4px 4px; border-radius: 999px; color: #667085; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s, background .2s; }
+  .home-link:hover { background: #eaf2fc; color: #3478c9; }
+  .home-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #e8edf4; border-radius: 50%; background: #fff; color: #3478c9; font-size: 18px; line-height: 1; box-shadow: 0 2px 6px rgba(31,50,81,.06); transition: transform .2s, box-shadow .2s; }
+  .home-link:hover .home-icon { transform: translateX(-2px); box-shadow: 0 3px 9px rgba(31,50,81,.1); }
+  .home-link:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+  .order-control { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f8fafc; }
+  .order-option { position: relative; cursor: pointer; }
+  .order-option input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .order-option span { display: block; padding: 8px 12px; border-radius: 8px; color: #667085; font-size: 13px; font-weight: 600; white-space: nowrap; transition: color .18s, background .18s, box-shadow .18s; }
+  .order-option input:checked + span { background: #fff; color: #3478c9; box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+  .order-option input:focus-visible + span { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html"><span class="home-icon" aria-hidden="true">‹</span><span>练习目录</span></a>
+<h1>Mister Skinnylegs · 中译英练习（79 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <div class="order-control" role="radiogroup" aria-label="题目顺序">
+      <label class="order-option"><input type="radio" name="orderMode" value="original" checked onchange="changeOrder()"><span>原文顺序</span></label>
+      <label class="order-option"><input type="radio" name="orderMode" value="shuffle" onchange="changeOrder()"><span>随机顺序</span></label>
+    </div>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track" id="progressTrack" role="progressbar" aria-label="已完成题目" aria-valuemin="0" aria-valuemax="79" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "佩奇在玩她的玩偶小屋。乔治也在玩。", answers: ["Peppa is playing with her doll's house. George is playing, too."] },
+  { prompt: "佩奇在给玩偶之家开茶会。", answers: ["Peppa is making a tea party for the doll family."] },
+  { prompt: "来吧，乔治！我来扮演妈妈和爸爸。", answers: ["Here, George! I'm the Mummy and Daddy."] },
+  { prompt: "你来扮演孩子们。", answers: ["You can be the children."] },
+  { prompt: "孩子们！下午茶时间快到了，你们必须得洗手。", answers: ["Children! It's nearly tea time, so you must wash your hands."] },
+  { prompt: "乔治把玩偶放在床上。", answers: ["George's putting the dolls to bed."] },
+  { prompt: "晚安！", answers: ["Night night!"] },
+  { prompt: "乔治，你为什么把孩子们放在床上？", answers: ["George, why are you putting the children to bed?"] },
+  { prompt: "他们要参加茶会。", answers: ["They're having a tea party."] },
+  { prompt: "乔治喜欢把玩偶放在床上。", answers: ["George likes putting the dolls to bed."] },
+  { prompt: "孩子们，快下来，不然你们吃不到蛋糕了！", answers: ["Children, come down stairs right now or you won't get any cake!"] },
+  { prompt: "乔治没在听。", answers: ["George isn't listening."] },
+  { prompt: "他在忙着把玩偶放到床上。", answers: ["He's too busy putting the dolls to bed."] },
+  { prompt: "乔治！如果你想玩我的玩偶小屋，你得帮忙办茶会。", answers: ["George! If you want to play with my doll's house, you have to help with the tea party."] },
+  { prompt: "来吧，乔治，你去把茶壶装满。", answers: ["Here, George, you can fill the teapot with water."] },
+  { prompt: "孩子们，现在马上下楼吧。", answers: ["Children, come downstairs right now."] },
+  { prompt: "妈妈！我们来了！", answers: ["Mummy! We're coming!"] },
+  { prompt: "乔治准备把茶壶装满水。", answers: ["George is going to fill the teapot with water."] },
+  { prompt: "乔治在水槽里发现了一只蜘蛛。", answers: ["George has found a spider in the sink."] },
+  { prompt: "乔治想蜘蛛成为他的朋友。", answers: ["George wants the spider to be his friend."] },
+  { prompt: "乔治喜欢蜘蛛。", answers: ["George likes the spider."] },
+  { prompt: "蛛蛛也喜欢乔治。", answers: ["The spider likes George."] },
+  { prompt: "佩奇喜欢举办茶会。", answers: ["Peppa loves playing tea parties."] },
+  { prompt: "所有的巧克力饼干在哪啊，爸爸？", answers: ["Where are all the chocolate biscuits, Daddy?"] },
+  { prompt: "我们昨天还有很多的！", answers: ["We had lots yesterday!"] },
+  { prompt: "哦，呃，对不起，妈妈，我已经吃完了。", answers: ["Oh, err, I'm sorry, Mummy,I must have eaten them all."] },
+  { prompt: "淘气的爸爸。", answers: ["Naughty Daddy."] },
+  { prompt: "乔治把蜘蛛放在床上。", answers: ["George is putting the spider to bed."] },
+  { prompt: "晚安。", answers: ["Night night."] },
+  { prompt: "乔治，你在干什么呢？", answers: ["George, what is it you're doing?"] },
+  { prompt: "你得帮我办茶会。", answers: ["You have to help me with the tea party."] },
+  { prompt: "救命，救命！", answers: ["Help, help!"] },
+  { prompt: "爸爸！有只蜘蛛在我的卧室！！", answers: ["Daddy! There's a spider in my bedroom!!"] },
+  { prompt: "不用担心，佩奇。", answers: ["Don't worry, Peppa."] },
+  { prompt: "求你了，爸爸，把它弄走。", answers: ["Please, Daddy, take it away."] },
+  { prompt: "不用惊慌。", answers: ["No need to panic."] },
+  { prompt: "你好，乔治，你有没有看到蛛蛛？", answers: ["Hello, George, have you seen the spider?"] },
+  { prompt: "太吓人了。把它弄走。", answers: ["It's too scary. Take it away."] },
+  { prompt: "没有必要这么害怕，佩奇。", answers: ["There's no need to be afraid, Peppa."] },
+  { prompt: "蛛蛛是非常非常小的他们不会伤害你。", answers: ["Spiders are very, very small and they can't hurt you."] },
+  { prompt: "但是别担心，", answers: ["But don't worry，"] },
+  { prompt: "爸爸会把它拿出卧室。", answers: ["Daddy will take it out of the bedroom."] },
+  { prompt: "哦啊！他长得挺大的，是不是？", answers: ["Woah! He's quite big, isn't he?"] },
+  { prompt: "嗯。。。我要去叫猪妈妈来。", answers: ["Umm...I'll just fetch Mummy Pig."] },
+  { prompt: "猪妈妈！", answers: ["Mummy Pig!"] },
+  { prompt: "你好，瘦腿先生。", answers: ["Hello, Mr. Skinnylegs."] },
+  { prompt: "佩奇变得大胆一些了。", answers: ["Peppa feels a little bit braver."] },
+  { prompt: "他喜欢在我的玩偶小屋。", answers: ["He likes being in my doll's house."] },
+  { prompt: "你们好，孩子们，", answers: ["Hello, children,"] },
+  { prompt: "我听说你们发现了一只小蜘蛛。", answers: ["I hear you've found a little spider."] },
+  { prompt: "我会把它拿出卧室，你俩就可以继续玩了。", answers: ["I'll take him out of the bedroom so you two can play."] },
+  { prompt: "妈妈，他的名字叫瘦腿先生。", answers: ["Mummy, his name is Mr. Skinnylegs."] },
+  { prompt: "哦！瘦腿先生很大，是不是？", answers: ["Oh! Mr. Skinnylegs is big, isn't he?"] },
+  { prompt: "佩奇和和乔治喜欢这蜘蛛。", answers: ["Peppa and George like the spider."] },
+  { prompt: "晚安。", answers: ["Night night."] },
+  { prompt: "乔治把蜘蛛放到床上。", answers: ["George is putting the spider to bed."] },
+  { prompt: "不，乔治！", answers: ["No, George!"] },
+  { prompt: "他想要喝些茶。", answers: ["He wants some tea."] },
+  { prompt: "他不想睡在床上。", answers: ["He doesn't want to be in bed."] },
+  { prompt: "你饿吗，瘦腿先生？", answers: ["Are you hungry, Mr. Skinnylegs?"] },
+  { prompt: "你想要些蛋糕吗？", answers: ["Would you like some cake?"] },
+  { prompt: "佩奇不再害怕蛛蛛了。", answers: ["Peppa isn't afraid of the spider anymore."] },
+  { prompt: "妈妈，爸爸。请坐下。", answers: ["Mummy, Daddy. Sit down."] },
+  { prompt: "我们准备和瘦腿先生一起用茶。", answers: ["We're all going to have tea with Mr. Skinnylegs."] },
+  { prompt: "谁想要茶？", answers: ["Who wants tea?"] },
+  { prompt: "请给我！请给我！", answers: ["Me, please! Me, please!"] },
+  { prompt: "美味！", answers: ["Delicious!"] },
+  { prompt: "佩奇喜欢举办茶会。", answers: ["Peppa loves playing tea parties."] },
+  { prompt: "这是你的茶，瘦腿先生。", answers: ["Here's your tea, Mr. Skinnylegs."] },
+  { prompt: "你说什么？", answers: ["What's that?"] },
+  { prompt: "你想对我爸爸说“你好”？", answers: ["You want to say ''hello'' to my daddy?"] },
+  { prompt: "你好，猪爸爸！", answers: ["Hello, Mr. Daddy Pig!"] },
+  { prompt: "嘿，呃，没关系，佩奇。", answers: ["Heh, err, that's all right, Peppa."] },
+  { prompt: "让瘦腿先生喝茶。", answers: ["Let Mr. Skinnylegs drink his tea."] },
+  { prompt: "你不会害怕的，对不对，爸爸？", answers: ["You're not scared, are you, Daddy?"] },
+  { prompt: "哦，不，当然不害怕。", answers: ["Oh, no, of course not."] },
+  { prompt: "不要靠得太近。", answers: ["Not so close."] },
+  { prompt: "佩奇喜欢瘦腿先生，", answers: ["Peppa likes Mr. Skinnylegs,"] },
+  { prompt: "大家都喜欢瘦腿先生。", answers: ["Everyone likes Mr. Skinnylegs."] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+let currentOrderMode = "original";
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始将清空本轮进度和答题统计，并从第一题重新开始。确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const selectedMode = document.querySelector('input[name="orderMode"]:checked').value;
+  const hasProgress = stats.correct > 0 || stats.wrong > 0 || stats.skipped > 0;
+  if (hasProgress && !window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？")) {
+    document.querySelector(`input[name="orderMode"][value="${currentOrderMode}"]`).checked = true;
+    return;
+  }
+  currentOrderMode = selectedMode;
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>

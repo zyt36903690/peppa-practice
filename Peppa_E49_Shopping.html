@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Shopping · 中译英练习（90 句）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f4f7fb; color: #202938; }
+  .home-link { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px -4px; padding: 4px 8px 4px 4px; border-radius: 999px; color: #667085; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s, background .2s; }
+  .home-link:hover { background: #eaf2fc; color: #3478c9; }
+  .home-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #e8edf4; border-radius: 50%; background: #fff; color: #3478c9; font-size: 18px; line-height: 1; box-shadow: 0 2px 6px rgba(31,50,81,.06); transition: transform .2s, box-shadow .2s; }
+  .home-link:hover .home-icon { transform: translateX(-2px); box-shadow: 0 3px 9px rgba(31,50,81,.1); }
+  .home-link:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  .subtitle { color: #667085; font-size: 14px; margin: 0 0 20px; }
+  .card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 28px; box-shadow: 0 8px 28px rgba(31,50,81,.08); }
+  .progress-row { display: flex; justify-content: space-between; color: #667085; font-size: 14px; margin-bottom: 10px; }
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+  .order-control { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f8fafc; }
+  .order-option { position: relative; cursor: pointer; }
+  .order-option input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .order-option span { display: block; padding: 8px 12px; border-radius: 8px; color: #667085; font-size: 13px; font-weight: 600; white-space: nowrap; transition: color .18s, background .18s, box-shadow .18s; }
+  .order-option input:checked + span { background: #fff; color: #3478c9; box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+  .order-option input:focus-visible + span { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  .progress-track { height: 7px; background: #edf0f5; border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .progress-bar { height: 100%; width: 0; background: #4a90d9; transition: width .25s ease; }
+  .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; }
+  .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
+  input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
+  input:focus { border-color: #4a90d9; }
+  .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
+  button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
+  button:hover { opacity: .86; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(52,120,201,.28); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .check { flex: 1; background: #3478c9; color: #fff; }
+  .check.next-action { background: #1a9c4b; }
+  .skip, .restart { background: #edf0f5; color: #344054; }
+  .result { margin-top: 16px; font-size: 18px; font-weight: 600; min-height: 24px; }
+  .correct { color: #1a9c4b; }
+  .wrong { color: #d33; }
+  .answer { margin-top: 8px; font-size: 15px; color: #475467; line-height: 1.8; }
+  .wrong-token { color: #b42318; background: #fee4e2; border-radius: 3px; padding: 1px 2px; text-decoration: underline wavy #d92d20; }
+  .answer-label { display: block; margin-bottom: 4px; }
+  .stats { margin-top: 18px; font-size: 14px; color: #667085; line-height: 1.8; }
+  .answer { overflow-wrap: anywhere; }
+  @media (max-width: 520px) { body { margin: 22px auto; padding: 0 14px; } .card { padding: 20px; } .prompt { font-size: 20px; } .buttons { display: grid; grid-template-columns: 1fr 1fr; } .check { grid-column: 1 / -1; } .buttons button { width: 100%; padding: 11px 10px; } }
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html"><span class="home-icon" aria-hidden="true">‹</span><span>练习目录</span></a>
+<h1>Shopping · 中译英练习（90 句）</h1>
+<p class="subtitle">看中文回忆英文，按自己的节奏完成每一道题。</p>
+<div class="card">
+  <div class="toolbar">
+    <div class="order-control" role="radiogroup" aria-label="题目顺序">
+      <label class="order-option"><input type="radio" name="orderMode" value="original" checked onchange="changeOrder()"><span>原文顺序</span></label>
+      <label class="order-option"><input type="radio" name="orderMode" value="shuffle" onchange="changeOrder()"><span>随机顺序</span></label>
+    </div>
+  </div>
+  <div class="progress-row"><span id="questionCount"></span><span id="progressText"></span></div>
+  <div class="progress-track" id="progressTrack" role="progressbar" aria-label="已完成题目" aria-valuemin="0" aria-valuemax="90" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="prompt" id="prompt">加载中…</div>
+  <div class="hint" id="hint"></div>
+  <input id="answer" type="text" autocomplete="off" autofocus placeholder="在这里输入英文…">
+  <div class="buttons">
+    <button class="check" id="primaryButton" onclick="check()">检查（Enter）</button>
+    <button class="skip" onclick="skip()">跳过</button>
+    <button class="restart" onclick="restart()">重新开始</button>
+  </div>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+  <div class="answer" id="answerText"></div>
+</div>
+<div class="stats" id="stats"></div>
+
+<script>
+const cards = [
+  { prompt: "佩奇和乔治一起去购物！", answers: ["Peppa and George are going shopping!"] },
+  { prompt: "佩奇和乔治喜欢购物。", answers: ["Peppa and George like shopping."] },
+  { prompt: "乔治喜欢坐在推车里。", answers: ["George loves sitting in the trolley."] },
+  { prompt: "佩奇也是。", answers: ["So does Peppa."] },
+  { prompt: "爸爸，我能也坐在推车里吗？", answers: ["Daddy, can I sit in the trolley, too?"] },
+  { prompt: "对于推车来说你太大了，佩奇。", answers: ["You're too big for the trolley, Peppa."] },
+  { prompt: "哦！", answers: ["Oh!"] },
+  { prompt: "但你可以帮忙购物。", answers: ["But you can help with the shopping."] },
+  { prompt: "哦，好的！", answers: ["Oh, goody!"] },
+  { prompt: "我们已经列了四样东西在购物清单上。", answers: ["We've got four things on the list."] },
+  { prompt: "有番茄，意大利面，洋葱和水果。", answers: ["Tomatoes, spaghetti, onions and fruit."] },
+  { prompt: "我都能找到！", answers: ["I'll find it all!"] },
+  { prompt: "走这边！", answers: ["This way!"] },
+  { prompt: "佩奇和乔治都喜欢购物。", answers: ["Peppa and George love shopping."] },
+  { prompt: "佩奇，首先，我们需要些番茄。", answers: ["Peppa, first, we need tomatoes."] },
+  { prompt: "嗯！我看到了！我看到了！", answers: ["Hmmmm! I can see them!I can see them!"] },
+  { prompt: "这里有番茄，妈妈。", answers: ["Here are the tomatoes, Mummy."] },
+  { prompt: "做得好，佩奇！", answers: ["Well done, Peppa!"] },
+  { prompt: "一，二，三，四。", answers: ["One, two, three, four."] },
+  { prompt: "现在，把他们放进推车里。", answers: ["Now, put them in the trolley."] },
+  { prompt: "我找到番茄了！", answers: ["I found the tomatoes!"] },
+  { prompt: "做得好，佩奇。", answers: ["Well done, Peppa."] },
+  { prompt: "番茄，那么现在可以把它从清单里划去了。", answers: ["Tomatoes, that's one thing off the list."] },
+  { prompt: "清单里的下一样是什么？", answers: ["What's next on the list?"] },
+  { prompt: "意大利面！", answers: ["Spaghetti!"] },
+  { prompt: "意-面！", answers: ["Pi-getty!"] },
+  { prompt: "说得对，乔治，", answers: ["That's right, George,"] },
+  { prompt: "但应该叫意大利面。", answers: ["but it's called spa-ghe-tti."] },
+  { prompt: "意-面！", answers: ["Pi-getty!"] },
+  { prompt: "意大利面是佩奇和乔治最喜欢吃的食物。", answers: ["Spaghetti is Peppa and George's favorite food."] },
+  { prompt: "我想知道意大利面在哪？", answers: ["I wonder where the spaghetti is?"] },
+  { prompt: "我看见了！这边！", answers: ["I can see it! This way!"] },
+  { prompt: "意大利面！看，妈妈！", answers: ["Spaghetti! Look, Mummy!"] },
+  { prompt: "意大利面在这里。", answers: ["Here's the spaghetti."] },
+  { prompt: "做得好，佩奇。", answers: ["Well done, Peppa."] },
+  { prompt: "把意大利面放进推车里吧。", answers: ["Let's put this spaghetti in the trolley."] },
+  { prompt: "好的，妈妈。", answers: ["Yes, Mummy."] },
+  { prompt: "意-面！", answers: ["Pi-getty!"] },
+  { prompt: "乔治，它叫意-大-利-面。", answers: ["George, it's called spa-ghe-tti."] },
+  { prompt: "意-面！", answers: ["Pi-getty!"] },
+  { prompt: "清单的下一样是什么，佩奇？", answers: ["What's next on the list, Peppa?"] },
+  { prompt: "薯片！", answers: ["Crisps!"] },
+  { prompt: "薯片不在清单上。", answers: ["Crisps are not on the list."] },
+  { prompt: "我们有很多薯片在家里，佩奇。", answers: ["We have plenty of crisps at home, Peppa."] },
+  { prompt: "再猜一下。", answers: ["Have another guess."] },
+  { prompt: "嗯。我真的想不起来了。", answers: ["Hmmm. I just can't remember."] },
+  { prompt: "你记得吗，乔治？", answers: ["Can you remember, George?"] },
+  { prompt: "恐-龙！", answers: ["Dine-Saw!"] },
+  { prompt: "恐龙？", answers: ["Dinosaur?"] },
+  { prompt: "乔治，超市里可没有什么恐龙！", answers: ["George, there aren't any dinosaurs in the supermarket!"] },
+  { prompt: "不，乔治。清单的下一样是洋葱。", answers: ["No, George. The next thing on the list is onions."] },
+  { prompt: "是洋葱！我现在想起来了！", answers: ["Onions! I remember now!"] },
+  { prompt: "它们在这呢！", answers: ["Here they are!"] },
+  { prompt: "做得好。", answers: ["Well done."] },
+  { prompt: "一，二，三，四！洋葱来了。", answers: ["One, two, three, four! Onions."] },
+  { prompt: "做得好。清单上的东西差不多都有了。", answers: ["Very good.That's nearly everything on our list."] },
+  { prompt: "清单上还有最后一样东西。", answers: ["There's one last thing on the list."] },
+  { prompt: "一棵植物？清单上有吗？", answers: ["A plant? Is that on the list?"] },
+  { prompt: "哦，不，乔治。", answers: ["Oh, no, George."] },
+  { prompt: "清单上最后一样东西是水果。", answers: ["The last thing on the list is fruit."] },
+  { prompt: "哦。", answers: ["Oh."] },
+  { prompt: "没关系，乔治。", answers: ["Never mind, George."] },
+  { prompt: "水果由你来选。", answers: ["You can choose the fruit."] },
+  { prompt: "水果在哪？", answers: ["Where is the fruit?"] },
+  { prompt: "在那边！", answers: ["Over there!"] },
+  { prompt: "那边有苹果，橙子，香蕉", answers: ["There are apples and oranges and bananas"] },
+  { prompt: "还有一个很大的西瓜。", answers: ["and a very big melon."] },
+  { prompt: "想吃什么水果，乔治？", answers: ["What fruit shall we have, George?"] },
+  { prompt: "苹果？", answers: ["Apples?"] },
+  { prompt: "橙子？", answers: ["Oranges?"] },
+  { prompt: "香蕉？", answers: ["Bananas?"] },
+  { prompt: "一个西瓜！", answers: ["A melon!"] },
+  { prompt: "这里是收银台，所有食物都在这里付钱。", answers: ["This is the checkout where all the food is paid for."] },
+  { prompt: "有番茄，意大利面，洋葱，西瓜，巧克力蛋糕。。。", answers: ["Tomatoes, spaghetti, onions, melon, chocolate cake..."] },
+  { prompt: "巧克力蛋糕？", answers: ["Chocolate cake?"] },
+  { prompt: "巧克力蛋糕？是在清单上的吗？", answers: ["Chocolate cake? Is that on the list?"] },
+  { prompt: "佩奇？是你把巧克力蛋糕放进推车的吗？", answers: ["Peppa? Did you put the chocolate cake in the trolley?"] },
+  { prompt: "不是，妈妈。", answers: ["No, Mummy."] },
+  { prompt: "乔治？是你把巧克力蛋糕放进推车的吗？", answers: ["George? Did you put the chocolate cake in the trolley?"] },
+  { prompt: "不是。", answers: ["No."] },
+  { prompt: "哦，也不是我放的。", answers: ["Well, I didn't put it in."] },
+  { prompt: "那是谁放的？", answers: ["Then who did?"] },
+  { prompt: "呃。。。我想它配布丁吃很不错。", answers: ["Er... I thought it might be nice for pudding."] },
+  { prompt: "猪爸爸！", answers: ["Daddy Pig!"] },
+  { prompt: "淘气的爸爸！", answers: ["Naughty Daddy!"] },
+  { prompt: "对不起！但它看上去很好吃。", answers: ["Sorry! It just looked so delicious."] },
+  { prompt: "它看上去的确很美味。", answers: ["It does look rather yummy."] },
+  { prompt: "哦，让我们假装它也在清单上。", answers: ["Oh, let's pretend it was on the list."] },
+  { prompt: "巧克力蛋糕。", answers: ["Chocolate cake."] },
+  { prompt: "好哦！", answers: ["Hurray!"] },
+];
+
+function normalize(s) {
+  return s.toLowerCase().replace(/['’]/g, "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function highlightWrongWords(userAnswer, correctAnswer) {
+  const wordPattern = /[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*/g;
+  const userWords = [...userAnswer.matchAll(wordPattern)];
+  const correctWords = [...correctAnswer.matchAll(wordPattern)];
+  const rows = userWords.length + 1;
+  const cols = correctWords.length + 1;
+  const lcs = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  for (let i = userWords.length - 1; i >= 0; i--) {
+    for (let j = correctWords.length - 1; j >= 0; j--) {
+      const userWord = userWords[i][0].toLowerCase();
+      const correctWord = correctWords[j][0].toLowerCase();
+      lcs[i][j] = userWord === correctWord
+        ? lcs[i + 1][j + 1] + 1
+        : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    }
+  }
+
+  const matches = [];
+  let i = 0;
+  let j = 0;
+  while (i < userWords.length && j < correctWords.length) {
+    if (userWords[i][0].toLowerCase() === correctWords[j][0].toLowerCase()) {
+      matches.push([i, j]);
+      i++;
+      j++;
+    } else if (lcs[i][j + 1] >= lcs[i + 1][j]) {
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  const wrongIndexes = new Set();
+  const missingIndexes = new Set();
+  let previousUser = -1;
+  let previousCorrect = -1;
+  for (const [matchedUser, matchedCorrect] of [...matches, [userWords.length, correctWords.length]]) {
+    const userGap = matchedUser - previousUser - 1;
+    const correctGap = matchedCorrect - previousCorrect - 1;
+    const pairedGap = Math.min(userGap, correctGap);
+    for (let offset = 0; offset < pairedGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < userGap; offset++) {
+      wrongIndexes.add(previousUser + 1 + offset);
+    }
+    for (let offset = pairedGap; offset < correctGap; offset++) {
+      missingIndexes.add(previousCorrect + 1 + offset);
+    }
+    previousUser = matchedUser;
+    previousCorrect = matchedCorrect;
+  }
+
+  let result = "";
+  let lastIndex = 0;
+  userWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += escapeHtml(userAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    result += wrongIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  result += escapeHtml(userAnswer.slice(lastIndex));
+
+  let correctResult = "";
+  lastIndex = 0;
+  correctWords.forEach((match, index) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    correctResult += escapeHtml(correctAnswer.slice(lastIndex, start));
+    const word = escapeHtml(match[0]);
+    correctResult += missingIndexes.has(index) ? `<mark class="wrong-token">${word}</mark>` : word;
+    lastIndex = end;
+  });
+  correctResult += escapeHtml(correctAnswer.slice(lastIndex));
+  return { user: result, correct: correctResult };
+}
+
+let queue = [];
+let current = null;
+let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+let locked = false;
+let awaitingNext = false;
+let currentOrderMode = "original";
+
+function setPrimaryAction(action) {
+  const button = document.getElementById("primaryButton");
+  awaitingNext = action === "next";
+  button.classList.toggle("next-action", awaitingNext);
+  button.textContent = awaitingNext ? "下一题" : action === "done" ? "本轮完成" : "检查（Enter）";
+  button.onclick = action === "next" ? nextCard : check;
+  button.disabled = action === "done";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetQueue() {
+  queue = cards.map((c, i) => i);
+  if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
+    shuffle(queue);
+  }
+  stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
+  locked = false;
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    current = null;
+    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("hint").textContent = "";
+    document.getElementById("answer").style.display = "none";
+    setPrimaryAction("done");
+    document.querySelector(".skip").disabled = true;
+    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("progressText").textContent = "100%";
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("result").textContent = "";
+    document.getElementById("answerText").textContent = "";
+    document.getElementById("stats").textContent =
+      `本轮答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}；共提交 ${stats.total} 次。`;
+    return;
+  }
+  locked = false;
+  setPrimaryAction("check");
+  current = cards[queue[0]];
+  const completed = cards.length - queue.length;
+  const percent = Math.round(completed / cards.length * 100);
+  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  document.getElementById("progressText").textContent = `${percent}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
+  document.querySelector(".skip").disabled = false;
+  document.getElementById("prompt").textContent = current.prompt;
+  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("answer").style.display = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").focus();
+  document.getElementById("result").textContent = "";
+  document.getElementById("answerText").textContent = "";
+}
+
+function check() {
+  if (!current || locked) return;
+  const input = document.getElementById("answer").value;
+  if (!input.trim()) return;
+  locked = true;
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+  const userNorm = normalize(input);
+  const ok = current.answers.some(a => normalize(a) === userNorm);
+
+  stats.total++;
+  const resultEl = document.getElementById("result");
+  const answerEl = document.getElementById("answerText");
+
+  if (ok) {
+    stats.correct++;
+    resultEl.textContent = "✅ 正确";
+    resultEl.className = "result correct";
+    answerEl.textContent = "";
+    queue.shift();
+  } else {
+    stats.wrong++;
+    resultEl.textContent = "❌ 不对，再想想";
+    resultEl.className = "result wrong";
+    const comparison = highlightWrongWords(input, current.answers[0]);
+    answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
+      `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
+    const idx = queue.shift();
+    queue.push(idx);
+  }
+  updateStats();
+}
+
+function skip() {
+  if (!current || locked) return;
+  locked = true;
+  stats.skipped++;
+  document.getElementById("result").textContent = "已跳过";
+  document.getElementById("result").className = "result";
+  document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
+  const idx = queue.shift();
+  queue.push(idx);
+  updateStats();
+  document.querySelector(".skip").disabled = true;
+  setPrimaryAction("next");
+}
+
+function restart(confirmed = false) {
+  if (!confirmed && (stats.correct || stats.wrong || stats.skipped) &&
+      !window.confirm("重新开始将清空本轮进度和答题统计，并从第一题重新开始。确定继续吗？")) return;
+  resetQueue();
+  document.getElementById("answer").style.display = "";
+  document.getElementById("stats").textContent = "";
+  nextCard();
+  updateStats();
+}
+
+function changeOrder() {
+  const selectedMode = document.querySelector('input[name="orderMode"]:checked').value;
+  const hasProgress = stats.correct > 0 || stats.wrong > 0 || stats.skipped > 0;
+  if (hasProgress && !window.confirm("切换题目顺序会重新开始本轮，当前进度和统计将清零。要继续吗？")) {
+    document.querySelector(`input[name="orderMode"][value="${currentOrderMode}"]`).checked = true;
+    return;
+  }
+  currentOrderMode = selectedMode;
+  restart(true);
+}
+
+function updateStats() {
+  document.getElementById("stats").textContent =
+    `已提交 ${stats.total} 次：答对 ${stats.correct}，答错 ${stats.wrong}，跳过 ${stats.skipped}`;
+}
+
+document.getElementById("answer").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (awaitingNext) nextCard();
+    else check();
+  }
+});
+
+resetQueue();
+nextCard();
+</script>
+</body>
+</html>
