@@ -28,8 +28,8 @@
   .prompt { font-size: 22px; font-weight: 600; margin-bottom: 8px; line-height: 1.5; overflow-wrap: anywhere; }
   .hint { color: #667085; font-size: 14px; margin-bottom: 16px; }
   input { width: 100%; font-size: 18px; padding: 12px 14px; border: 2px solid #d0d5dd; border-radius: 10px; outline: none; }
-  input:focus { border-color: #4a90d9; }
-  input#answer.answer-wrong, input#answer.answer-wrong:focus { -webkit-appearance: none; appearance: none; border: 2px solid #d33 !important; box-shadow: 0 0 0 3px rgba(221,51,51,.16) !important; }
+  input:focus, input#answer { border-color: #4a90d9; }
+  input#answer.answer-wrong, input#answer.answer-wrong:focus { -webkit-appearance: none; appearance: none; border: 2px solid #d33 !important; outline-color: rgba(221,51,51,.28) !important; box-shadow: 0 0 0 3px rgba(221,51,51,.16) !important; }
   .buttons { margin-top: 18px; display: flex; align-items: stretch; gap: 10px; }
   button { min-height: 46px; font-size: 15px; font-weight: 600; padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; transition: opacity .2s, transform .2s, box-shadow .2s; }
   button:hover { opacity: .86; }
@@ -345,8 +345,7 @@ function nextCard() {
     : "请输入对应的英文";
   document.getElementById("answer").style.display = "";
   document.getElementById("answer").value = "";
-  document.getElementById("answer").classList.remove("answer-wrong");
-  document.getElementById("answer").removeAttribute("aria-invalid");
+  clearAnswerError();
   document.getElementById("answer").focus();
   document.getElementById("result").textContent = "";
   document.getElementById("answerText").textContent = "";
@@ -370,8 +369,7 @@ function check() {
     stats.correct++;
     resultEl.textContent = "✅ 正确";
     resultEl.className = "result correct";
-    document.getElementById("answer").classList.remove("answer-wrong");
-    document.getElementById("answer").removeAttribute("aria-invalid");
+    clearAnswerError();
     answerEl.textContent = "";
     queue.shift();
   } else {
@@ -385,13 +383,30 @@ function check() {
     }
     resultEl.textContent = "❌ 不对，再想想";
     resultEl.className = "result wrong";
-    document.getElementById("answer").classList.add("answer-wrong");
-    document.getElementById("answer").setAttribute("aria-invalid", "true");
+    showAnswerError();
     const comparison = highlightWrongWords(input, current.answers[0]);
     answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
       `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
   }
   updateStats();
+}
+
+function showAnswerError() {
+  const input = document.getElementById("answer");
+  input.classList.add("answer-wrong");
+  input.setAttribute("aria-invalid", "true");
+  input.style.setProperty("-webkit-appearance", "none", "important");
+  input.style.setProperty("appearance", "none", "important");
+  input.style.setProperty("border", "2px solid #d33", "important");
+  input.style.setProperty("border-color", "#d33", "important");
+  input.style.setProperty("box-shadow", "0 0 0 3px rgba(221,51,51,.16)", "important");
+}
+
+function clearAnswerError() {
+  const input = document.getElementById("answer");
+  input.classList.remove("answer-wrong");
+  input.removeAttribute("aria-invalid");
+  ["-webkit-appearance", "appearance", "border", "border-color", "box-shadow"].forEach(property => input.style.removeProperty(property));
 }
 
 function skip() {
