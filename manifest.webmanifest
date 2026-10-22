@@ -1,0 +1,19 @@
+{
+  "id": "./index.html",
+  "name": "小猪佩奇中译英练习",
+  "short_name": "佩奇练习",
+  "description": "小猪佩奇中译英台词练习",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#f4f7fb",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "2048x2048",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
