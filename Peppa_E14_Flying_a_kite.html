@@ -254,11 +254,15 @@ function highlightWrongWords(userAnswer, correctAnswer) {
 }
 
 let queue = [];
+let wrongQueue = [];
+let wrongSet = new Set();
 let current = null;
 let stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
 let locked = false;
 let awaitingNext = false;
 let currentOrderMode = "original";
+let phase = "main";
+let reviewTotal = 0;
 
 function setPrimaryAction(action) {
   const button = document.getElementById("primaryButton");
@@ -282,22 +286,36 @@ function resetQueue() {
   if (document.querySelector('input[name="orderMode"]:checked').value === "shuffle") {
     shuffle(queue);
   }
+  wrongQueue = [];
+  wrongSet = new Set();
   stats = { correct: 0, wrong: 0, skipped: 0, total: 0 };
   locked = false;
+  phase = "main";
+  reviewTotal = 0;
 }
 
 function nextCard() {
   if (queue.length === 0) {
+    if (phase === "main" && wrongQueue.length > 0) {
+      phase = "review";
+      queue = [...wrongQueue];
+      reviewTotal = queue.length;
+      nextCard();
+      return;
+    }
     current = null;
-    document.getElementById("prompt").textContent = "🎉 本轮完成！";
+    document.getElementById("prompt").textContent = phase === "review" ? "🎉 错题复习完成！" : "🎉 本轮完成！";
     document.getElementById("hint").textContent = "";
     document.getElementById("answer").style.display = "none";
     setPrimaryAction("done");
     document.querySelector(".skip").disabled = true;
-    document.getElementById("questionCount").textContent = `已完成 ${cards.length} / ${cards.length} 题`;
+    document.getElementById("questionCount").textContent = phase === "review"
+      ? `错题复习完成 ${reviewTotal} / ${reviewTotal} 题`
+      : `已完成 ${cards.length} / ${cards.length} 题`;
     document.getElementById("progressText").textContent = "100%";
     document.getElementById("progressBar").style.width = "100%";
-    document.getElementById("progressTrack").setAttribute("aria-valuenow", cards.length);
+    document.getElementById("progressTrack").setAttribute("aria-valuemax", phase === "review" ? reviewTotal : cards.length);
+    document.getElementById("progressTrack").setAttribute("aria-valuenow", phase === "review" ? reviewTotal : cards.length);
     document.getElementById("result").textContent = "";
     document.getElementById("answerText").textContent = "";
     document.getElementById("stats").textContent =
@@ -307,15 +325,21 @@ function nextCard() {
   locked = false;
   setPrimaryAction("check");
   current = cards[queue[0]];
-  const completed = cards.length - queue.length;
-  const percent = Math.round(completed / cards.length * 100);
-  document.getElementById("questionCount").textContent = `已完成 ${completed} / ${cards.length} 题`;
+  const completed = phase === "review" ? reviewTotal - queue.length : cards.length - queue.length;
+  const total = phase === "review" ? reviewTotal : cards.length;
+  const percent = Math.round(completed / total * 100);
+  document.getElementById("questionCount").textContent = phase === "review"
+    ? `错题复习：${completed} / ${reviewTotal} 题`
+    : `已完成 ${completed} / ${cards.length} 题`;
   document.getElementById("progressText").textContent = `${percent}%`;
   document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressTrack").setAttribute("aria-valuemax", total);
   document.getElementById("progressTrack").setAttribute("aria-valuenow", completed);
   document.querySelector(".skip").disabled = false;
   document.getElementById("prompt").textContent = current.prompt;
-  document.getElementById("hint").textContent = "请输入对应的英文";
+  document.getElementById("hint").textContent = phase === "review"
+    ? "新题已完成，请重新作答错题"
+    : "请输入对应的英文";
   document.getElementById("answer").style.display = "";
   document.getElementById("answer").value = "";
   document.getElementById("answer").focus();
@@ -327,9 +351,6 @@ function check() {
   if (!current || locked) return;
   const input = document.getElementById("answer").value;
   if (!input.trim()) return;
-  locked = true;
-  document.querySelector(".skip").disabled = true;
-  setPrimaryAction("next");
   const userNorm = normalize(input);
   const ok = current.answers.some(a => normalize(a) === userNorm);
 
@@ -338,20 +359,28 @@ function check() {
   const answerEl = document.getElementById("answerText");
 
   if (ok) {
+    locked = true;
+    document.querySelector(".skip").disabled = true;
+    setPrimaryAction("next");
     stats.correct++;
     resultEl.textContent = "✅ 正确";
     resultEl.className = "result correct";
     answerEl.textContent = "";
     queue.shift();
   } else {
+    locked = false;
+    document.querySelector(".skip").disabled = false;
+    setPrimaryAction("check");
     stats.wrong++;
+    if (phase === "main" && !wrongSet.has(queue[0])) {
+      wrongSet.add(queue[0]);
+      wrongQueue.push(queue[0]);
+    }
     resultEl.textContent = "❌ 不对，再想想";
     resultEl.className = "result wrong";
     const comparison = highlightWrongWords(input, current.answers[0]);
     answerEl.innerHTML = `<span class="answer-label">你的答案：${comparison.user}</span>` +
       `<span class="answer-label">参考答案（标红为漏写/需改）：${comparison.correct}</span>`;
-    const idx = queue.shift();
-    queue.push(idx);
   }
   updateStats();
 }
@@ -363,8 +392,7 @@ function skip() {
   document.getElementById("result").textContent = "已跳过";
   document.getElementById("result").className = "result";
   document.getElementById("answerText").textContent = "参考答案：" + current.answers[0];
-  const idx = queue.shift();
-  queue.push(idx);
+  queue.shift();
   updateStats();
   document.querySelector(".skip").disabled = true;
   setPrimaryAction("next");
