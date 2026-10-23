@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f7fb">
-  <link rel="icon" type="image/png" href="icon.png?v=20261023-3">
+  <link rel="icon" type="image/png" href="icon.png?v=20261023-4">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261023-2">
   <link rel="manifest" href="manifest.webmanifest?v=20261023-2">
   <title>小猪佩奇 · 中译英练习</title>
@@ -646,6 +646,20 @@
       resultCount.textContent = `显示 ${visibleCount} / ${episodeCards.length} 集`;
       emptyState.classList.toggle('is-visible', visibleCount === 0);
     }
+
+    const prefetchedEpisodes = new Set();
+    document.querySelectorAll('.episode').forEach((card) => {
+      card.addEventListener('pointerdown', () => {
+        const url = new URL(card.href, location.href);
+        if (url.origin !== location.origin || prefetchedEpisodes.has(url.href)) return;
+        prefetchedEpisodes.add(url.href);
+        const prefetch = document.createElement('link');
+        prefetch.rel = 'prefetch';
+        prefetch.href = url.href;
+        prefetch.as = 'document';
+        document.head.append(prefetch);
+      }, { once: true, passive: true });
+    });
 
     searchInput.addEventListener('input', filterEpisodes);
     rangeButtons.forEach((button) => {
